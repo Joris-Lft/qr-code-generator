@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+      body {
+        background-color: #121212;
+        color: #eee;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 2rem;
+      }
+
+      input[type="text"] {
+        padding: 0.5rem;
+        width: 100%;
+        max-width: 400px;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        background: #1f1f1f;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin: 0.5rem;
+        cursor: pointer;
+      }
+
+      canvas {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Générateur de QRCode</h1>
+    <input type="text" id="urlInput" placeholder="Entrez une URL..." />
+    <div>
+      <button onclick="generateQRCode()">Générer</button>
+      <button onclick="downloadQRCode()">Télécharger</button>
+    </div>
+    <canvas id="qrCanvas"></canvas>
+
+    <script>
+      function generateQRCode() {
+        const url = document.getElementById("urlInput").value;
+        const canvas = document.getElementById("qrCanvas");
+        if (!url.trim()) {
+          alert("Veuillez entrer une URL.");
+          return;
+        }
+        QRCode.toCanvas(
+          canvas,
+          url,
+          { color: { dark: "#ffffff", light: "#121212" } },
+          function (error) {
+            if (error) console.error(error);
+          }
+        );
+      }
+
+      function downloadQRCode() {
+        const canvas = document.getElementById("qrCanvas");
+        const link = document.createElement("a");
+        link.download = "qrcode.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+    </script>
+  </body>
+</html>
